@@ -7,7 +7,7 @@ const cerrarPopup = document.getElementById("cerrarPopup");
 const ticketIdInput = document.getElementById("ticketId");
 const btnEnviar = document.getElementById("btnEnviar");
 
-const API_URL = "https://script.google.com/macros/s/AKfycbxnQ0aZtbZ6Rx54YJQvrOg4vf6mqn02DoGur_MxETD5KXY5ANlx1r5NSx180_ZbhKtYJA/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbxw0gLJ7WsjzHPKsvFEMb_dq1rWdYOdGUkf0kKl3Sw8KqSVBbevJJ-llWGTOZyHikMi/exec";
 
 /* =========================
    AUTOCOMPLETADO DE SITES
