@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registro de Incidencia</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+
+    <div class="form-header">
+      <div class="header-top">
+        <div class="header-title-group">
+          <label for="asunto">ASUNTO</label>
+        </div>
+        <div class="ticket-id-box">
+          <span class="ticket-id-label">Ticket ID</span>
+          <input type="text" id="ticketId" name="ticketId" value="Generado automáticamente" readonly />
+        </div>
+      </div>
+
+      <input
+        type="text"
+        id="asunto"
+        name="asunto"
+        value="Incidencia INC00000XX// Tipo de Incidencia // Site // Tipo de Afectación // Torre"
+        readonly
+      />
+    </div>
+
+    <form id="ticketForm" class="ticket-form">
+
+      <div class="section-title">DATOS GENERALES</div>
+
+      <table>
+        <tr>
+          <td class="label">Reportado por:</td>
+          <td colspan="3">
+            <input type="text" id="reportadoPor" name="reportadoPor" placeholder="Ingrese el nombre del reportante" />
+          </td>
+        </tr>
+
+        <tr>
+          <td class="label">Empresa:</td>
+          <td colspan="3">
+            <select id="empresa" name="empresa">
+              <option value="">Seleccione una opción</option>
+              <option value="FLM HUAWEI">FLM HUAWEI</option>
+              <option value="FLM COMFICA">FLM COMFICA</option>
+              <option value="INTEGRATEL">INTEGRATEL</option>
+            </select>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="label">Área Integratel (responsable):</td>
+          <td colspan="3">
+            <select id="areaTdp" name="areaTdp">
+              <option value="">Seleccione una opción</option>
+              <option value="Operaciones">Operaciones</option>
+              <option value="DRH">DRH</option>
+              <option value="Optimización">Optimización</option>
+            </select>
+          </td>
+        </tr>
+
+        <!-- NUEVO: buscador para autocompletar -->
+        <tr>
+          <td class="label">Buscar relación:</td>
+          <td colspan="3" class="autocomplete-cell">
+            <input
+              type="text"
+              id="buscadorSite"
+              placeholder="Buscar por código único, site o torrero"
+              autocomplete="off"
+            />
+            <div id="sugerenciasSite" class="autocomplete-list"></div>
+            <small class="file-help">Este campo solo ayuda a autocompletar. No se registra.</small>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="label">Código único:</td>
+          <td colspan="3">
+            <input type="text" id="codigoUnico" name="codigoUnico" placeholder="Ingrese el código único" />
+          </td>
+        </tr>
+
+        <tr>
+          <td class="label">Site:</td>
+          <td colspan="3">
+            <input type="text" id="site" name="site" placeholder="Ingrese el site" />
+          </td>
+        </tr>
+
+        <tr>
+          <td class="label">Torrero:</td>
+          <td colspan="3">
+            <input type="text" id="torrero" name="torrero" placeholder="Ingrese el nombre del torrero" />
+          </td>
+        </tr>
+
+        <tr>
+          <td class="label">Sitio coubicado:</td>
+          <td>
+            <label class="option-label">
+              <input type="radio" name="sitioCoubicado" value="Sí" />
+              Sí
+            </label>
+          </td>
+          <td>
+            <label class="option-label">
+              <input type="radio" name="sitioCoubicado" value="No" />
+              No
+            </label>
+          </td>
+          <td></td>
+        </tr>
+
+        
+        <tr>
+          <td class="label">Impedimiento de trabajos:</td>
+          <td>
+            <label class="option-label">
+              <input type="radio" name="impedimientoTrabajos" value="Sí" />
+              Sí
+            </label>
+          </td>
+          <td>
+            <label class="option-label">
+              <input type="radio" name="impedimientoTrabajos" value="No" />
+              No
+            </label>
+          </td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td class="label">Tipo de incidencia:</td>
+          <td colspan="3">
+            <select id="tipoIncidencia" name="tipoIncidencia">
+              <option value="">Seleccione una opción</option>
+              <option value="Acceso – chapa/candado">Acceso – chapa/candado</option>
+              <option value="Acceso – deuda">Acceso – deuda</option>
+              <option value="Acceso – contrato">Acceso – contrato</option>
+              <option value="Acceso – propietario no ubicable">Acceso – propietario no ubicable</option>
+              <option value="Acceso – reubicación de sitio">Acceso – reubicación de sitio</option>
+              <option value="Acceso (otros)">Acceso (otros)</option>
+              <option value="Infraestructura - insalubridad">Infraestructura - insalubridad</option>
+              <option value="Infraestructura - corrosión">Infraestructura - corrosión</option>
+              <option value="Infraestructura - spat">Infraestructura - spat</option>
+              <option value="Infraestructura - alta temperatura">Infraestructura - alta temperatura</option>
+              <option value="Robo/vandalismo">Robo/vandalismo</option>
+              <option value="Reclamo torrera">Reclamo torrera</option>
+            </select>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="label">Descripción de la incidencia:</td>
+          <td colspan="3">
+            <textarea
+              id="descripcionIncidencia"
+              name="descripcionIncidencia"
+              rows="6"
+              placeholder="Describa aquí la incidencia presentada..."
+            ></textarea>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="label">Especificar sitio de la incidencia:</td>
+          <td>
+            <label class="option-label">
+              <input type="checkbox" name="sitioIncidencia" value="Sala de equipos" />
+              Sala de equipos
+            </label>
+          </td>
+          <td>
+            <label class="option-label">
+              <input type="checkbox" name="sitioIncidencia" value="Áreas libres" />
+              Áreas libres
+            </label>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="label">Tipo Mantenimiento:</td>
+          <td colspan="3">
+            <select id="tipoMantenimiento" name="tipoMantenimiento">
+              <option value="">Seleccione una opción</option>
+              <option value="Preventivo">Preventivo</option>
+              <option value="Correctivo">Correctivo</option>
+              <option value="Desmontaje de antenas">Desmontaje de antenas</option>
+              <option value="Proactivo">Proactivo</option>
+              <option value="SWAP">SWAP</option>
+            </select>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="label">Tipo de afectación:</td>
+          <td colspan="3">
+            <select id="tipoAfectacion" name="tipoAfectacion">
+              <option value="">Seleccione una opción</option>
+              <option value="Afectación parcial">Afectación parcial</option>
+              <option value="Afectación total">Afectación total</option>
+              <option value="Sin afectación">Sin afectación</option>
+              <option value="N/A">N/A</option>
+              <option value="Interferencia">Interferencia</option>
+            </select>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="label">Ticket de atención para torrera ATC:</td>
+          <td colspan="3">
+            <input type="text" id="ticketAtencion" name="ticketAtencion" placeholder="Ingrese el ticket de atención" />
+          </td>
+        </tr>
+
+
+
+        <tr>
+          <td class="label">Adjuntar evidencia:</td>
+          <td colspan="3">
+            <input type="file" id="evidencias" name="evidencias" accept="image/*" multiple />
+            <small class="file-help">Puede adjuntar una o varias imágenes.</small>
+          </td>
+        </tr>
+      </table>
+
+      <div class="buttons">
+        <button type="submit" class="btn btn-enviar" id="btnEnviar">Enviar</button>
+        <button type="button" class="btn btn-limpiar" id="btnLimpiar">Limpiar</button>
+      </div>
+
+      <p id="mensaje"></p>
+    </form>
+  </div>
+
+  <div id="popupExito" class="popup-overlay">
+    <div class="popup-box">
+      <h3>Registro completado</h3>
+      <p id="popupTexto">Ticket ID registrado y notificado.</p>
+      <button type="button" id="cerrarPopup">Aceptar</button>
+    </div>
+  </div>
+
+  <script src="sites-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
