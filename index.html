@@ -42,6 +42,14 @@
         </tr>
 
         <tr>
+          <td class="label">Correo:</td>
+          <td colspan="3">
+            <input type="email" id="correo" name="correo" placeholder="Ingrese el correo del reportante" />
+            <small class="file-help">A este correo también llegará la notificación del ticket.</small>
+          </td>
+        </tr>
+
+        <tr>
           <td class="label">Empresa:</td>
           <td colspan="3">
             <select id="empresa" name="empresa">
@@ -65,7 +73,6 @@
           </td>
         </tr>
 
-        <!-- NUEVO: buscador para autocompletar -->
         <tr>
           <td class="label">Buscar relación:</td>
           <td colspan="3" class="autocomplete-cell">
@@ -83,21 +90,42 @@
         <tr>
           <td class="label">Código único:</td>
           <td colspan="3">
-            <input type="text" id="codigoUnico" name="codigoUnico" placeholder="Ingrese el código único" />
+            <input
+              type="text"
+              id="codigoUnico"
+              name="codigoUnico"
+              placeholder="Se completará automáticamente"
+              readonly
+              tabindex="-1"
+            />
           </td>
         </tr>
 
         <tr>
           <td class="label">Site:</td>
           <td colspan="3">
-            <input type="text" id="site" name="site" placeholder="Ingrese el site" />
+            <input
+              type="text"
+              id="site"
+              name="site"
+              placeholder="Se completará automáticamente"
+              readonly
+              tabindex="-1"
+            />
           </td>
         </tr>
 
         <tr>
           <td class="label">Torrero:</td>
           <td colspan="3">
-            <input type="text" id="torrero" name="torrero" placeholder="Ingrese el nombre del torrero" />
+            <input
+              type="text"
+              id="torrero"
+              name="torrero"
+              placeholder="Se completará automáticamente"
+              readonly
+              tabindex="-1"
+            />
           </td>
         </tr>
 
@@ -118,7 +146,6 @@
           <td></td>
         </tr>
 
-        
         <tr>
           <td class="label">Impedimiento de trabajos:</td>
           <td>
@@ -183,6 +210,7 @@
               Áreas libres
             </label>
           </td>
+          <td></td>
         </tr>
 
         <tr>
@@ -220,13 +248,25 @@
           </td>
         </tr>
 
-
-
         <tr>
           <td class="label">Adjuntar evidencia:</td>
           <td colspan="3">
-            <input type="file" id="evidencias" name="evidencias" accept="image/*" multiple />
-            <small class="file-help">Puede adjuntar una o varias imágenes.</small>
+            <div class="attachments-box">
+              <div class="attachments-header">
+                <input type="file" id="evidencias" name="evidencias" accept="image/*" multiple />
+                <button type="button" id="btnLimpiarAdjuntos" class="btn-limpiar-adjuntos">
+                  Limpiar adjuntos
+                </button>
+              </div>
+
+              <div id="listaAdjuntos" class="attachments-list">
+                <div class="attachments-empty">Aún no hay imágenes seleccionadas.</div>
+              </div>
+
+              <small class="file-help">
+                Puede agregar imágenes una o varias veces. Solo se permiten imágenes.
+              </small>
+            </div>
           </td>
         </tr>
       </table>
@@ -245,6 +285,14 @@
       <h3>Registro completado</h3>
       <p id="popupTexto">Ticket ID registrado y notificado.</p>
       <button type="button" id="cerrarPopup">Aceptar</button>
+    </div>
+  </div>
+
+  <div id="loaderEnvio" class="loader-envio-overlay">
+    <div class="loader-envio-box">
+      <img src="images/movistar.gif" alt="Guardando información..." />
+      <h3>Guardando información...</h3>
+      <p>Registrando ticket y enviando notificación.</p>
     </div>
   </div>
 
