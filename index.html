@@ -10,274 +10,333 @@
   <div class="container">
 
     <div class="form-header">
-      <div class="header-top">
-        <div class="header-title-group">
-          <label for="asunto">ASUNTO</label>
-        </div>
-        <div class="ticket-id-box">
-          <span class="ticket-id-label">Ticket ID</span>
-          <input type="text" id="ticketId" name="ticketId" value="Generado automáticamente" readonly />
-        </div>
+      <div class="header-main-title">
+        <h1>FORMULARIO DE INCIDENCIAS</h1>
+        <button type="button" id="btnSeguimientoCaso" class="btn-header-action">
+          Seguimiento de caso
+        </button>
       </div>
-
-      <input
-        type="text"
-        id="asunto"
-        name="asunto"
-        value="Incidencia INC00000XX// Tipo de Incidencia // Site // Tipo de Afectación // Torre"
-        readonly
-      />
     </div>
 
-    <form id="ticketForm" class="ticket-form">
+    <!-- VISTA FORMULARIO -->
+    <section id="formView">
+      <form id="ticketForm" class="ticket-form">
 
-      <div class="section-title">DATOS GENERALES</div>
+        <input
+          type="hidden"
+          id="asunto"
+          name="asunto"
+          value="Incidencia INC00000XX// Tipo de Incidencia // Site // Tipo de Afectación // Torre"
+        />
 
-      <table>
-        <tr>
-          <td class="label">Reportado por:</td>
-          <td colspan="3">
-            <input type="text" id="reportadoPor" name="reportadoPor" placeholder="Ingrese el nombre del reportante" />
-          </td>
-        </tr>
+        <input
+          type="hidden"
+          id="ticketId"
+          name="ticketId"
+          value="Generado automáticamente"
+          readonly
+        />
 
-        <tr>
-          <td class="label">Correo:</td>
-          <td colspan="3">
-            <input type="email" id="correo" name="correo" placeholder="Ingrese el correo del reportante" />
-            <small class="file-help">A este correo también llegará la notificación del ticket.</small>
-          </td>
-        </tr>
+        <div class="section-title">DATOS GENERALES</div>
 
-        <tr>
-          <td class="label">Empresa:</td>
-          <td colspan="3">
-            <select id="empresa" name="empresa">
-              <option value="">Seleccione una opción</option>
-              <option value="FLM HUAWEI">FLM HUAWEI</option>
-              <option value="FLM COMFICA">FLM COMFICA</option>
-              <option value="INTEGRATEL">INTEGRATEL</option>
-            </select>
-          </td>
-        </tr>
+        <table>
+          <tr>
+            <td class="label">Reportado por:</td>
+            <td colspan="3">
+              <input type="text" id="reportadoPor" name="reportadoPor" placeholder="Ingrese el nombre del reportante" />
+            </td>
+          </tr>
 
-        <tr>
-          <td class="label">Área Integratel (responsable):</td>
-          <td colspan="3">
-            <select id="areaTdp" name="areaTdp">
-              <option value="">Seleccione una opción</option>
-              <option value="Operaciones">Operaciones</option>
-              <option value="DRH">DRH</option>
-              <option value="Optimización">Optimización</option>
-            </select>
-          </td>
-        </tr>
+          <tr>
+            <td class="label">Correo:</td>
+            <td colspan="3">
+              <input type="email" id="correo" name="correo" placeholder="Ingrese el correo del reportante" />
+              <small class="file-help">A este correo también llegará la notificación del ticket.</small>
+            </td>
+          </tr>
 
-        <tr>
-          <td class="label">Buscar relación:</td>
-          <td colspan="3" class="autocomplete-cell">
-            <input
-              type="text"
-              id="buscadorSite"
-              placeholder="Buscar por código único, site o torrero"
-              autocomplete="off"
-            />
-            <div id="sugerenciasSite" class="autocomplete-list"></div>
-            <small class="file-help">Este campo solo ayuda a autocompletar. No se registra.</small>
-          </td>
-        </tr>
+          <tr>
+            <td class="label">Empresa:</td>
+            <td colspan="3">
+              <select id="empresa" name="empresa">
+                <option value="">Seleccione una opción</option>
+                <option value="FLM HUAWEI">FLM HUAWEI</option>
+                <option value="FLM COMFICA">FLM COMFICA</option>
+                <option value="INTEGRATEL">INTEGRATEL</option>
+              </select>
+            </td>
+          </tr>
 
-        <tr>
-          <td class="label">Código único:</td>
-          <td colspan="3">
-            <input
-              type="text"
-              id="codigoUnico"
-              name="codigoUnico"
-              placeholder="Se completará automáticamente"
-              readonly
-              tabindex="-1"
-            />
-          </td>
-        </tr>
+          <tr>
+            <td class="label">Área Integratel (responsable):</td>
+            <td colspan="3">
+              <select id="areaTdp" name="areaTdp">
+                <option value="">Seleccione una opción</option>
+                <option value="Operaciones">Operaciones</option>
+                <option value="DRH">DRH</option>
+                <option value="Optimización">Optimización</option>
+              </select>
+            </td>
+          </tr>
 
-        <tr>
-          <td class="label">Site:</td>
-          <td colspan="3">
-            <input
-              type="text"
-              id="site"
-              name="site"
-              placeholder="Se completará automáticamente"
-              readonly
-              tabindex="-1"
-            />
-          </td>
-        </tr>
+          <tr>
+            <td class="label">Buscar relación:</td>
+            <td colspan="3" class="autocomplete-cell">
+              <input
+                type="text"
+                id="buscadorSite"
+                placeholder="Buscar por código único, site o torrero"
+                autocomplete="off"
+              />
+              <div id="sugerenciasSite" class="autocomplete-list"></div>
+              <small class="file-help">Este campo solo ayuda a autocompletar. No se registra.</small>
+            </td>
+          </tr>
 
-        <tr>
-          <td class="label">Torrero:</td>
-          <td colspan="3">
-            <input
-              type="text"
-              id="torrero"
-              name="torrero"
-              placeholder="Se completará automáticamente"
-              readonly
-              tabindex="-1"
-            />
-          </td>
-        </tr>
+          <tr>
+            <td class="label">Código único:</td>
+            <td colspan="3">
+              <input
+                type="text"
+                id="codigoUnico"
+                name="codigoUnico"
+                placeholder="Se completará automáticamente"
+                readonly
+                tabindex="-1"
+              />
+            </td>
+          </tr>
 
-        <tr>
-          <td class="label">Sitio coubicado:</td>
-          <td>
-            <label class="option-label">
-              <input type="radio" name="sitioCoubicado" value="Sí" />
-              Sí
-            </label>
-          </td>
-          <td>
-            <label class="option-label">
-              <input type="radio" name="sitioCoubicado" value="No" />
-              No
-            </label>
-          </td>
-          <td></td>
-        </tr>
+          <tr>
+            <td class="label">Site:</td>
+            <td colspan="3">
+              <input
+                type="text"
+                id="site"
+                name="site"
+                placeholder="Se completará automáticamente"
+                readonly
+                tabindex="-1"
+              />
+            </td>
+          </tr>
 
-        <tr>
-          <td class="label">Impedimiento de trabajos:</td>
-          <td>
-            <label class="option-label">
-              <input type="radio" name="impedimientoTrabajos" value="Sí" />
-              Sí
-            </label>
-          </td>
-          <td>
-            <label class="option-label">
-              <input type="radio" name="impedimientoTrabajos" value="No" />
-              No
-            </label>
-          </td>
-          <td></td>
-        </tr>
+          <tr>
+            <td class="label">Torrero:</td>
+            <td colspan="3">
+              <input
+                type="text"
+                id="torrero"
+                name="torrero"
+                placeholder="Se completará automáticamente"
+                readonly
+                tabindex="-1"
+              />
+            </td>
+          </tr>
 
-        <tr>
-          <td class="label">Tipo de incidencia:</td>
-          <td colspan="3">
-            <select id="tipoIncidencia" name="tipoIncidencia">
-              <option value="">Seleccione una opción</option>
-              <option value="Acceso – chapa/candado">Acceso – chapa/candado</option>
-              <option value="Acceso – deuda">Acceso – deuda</option>
-              <option value="Acceso – contrato">Acceso – contrato</option>
-              <option value="Acceso – propietario no ubicable">Acceso – propietario no ubicable</option>
-              <option value="Acceso – reubicación de sitio">Acceso – reubicación de sitio</option>
-              <option value="Acceso (otros)">Acceso (otros)</option>
-              <option value="Infraestructura - insalubridad">Infraestructura - insalubridad</option>
-              <option value="Infraestructura - corrosión">Infraestructura - corrosión</option>
-              <option value="Infraestructura - spat">Infraestructura - spat</option>
-              <option value="Infraestructura - alta temperatura">Infraestructura - alta temperatura</option>
-              <option value="Robo/vandalismo">Robo/vandalismo</option>
-              <option value="Reclamo torrera">Reclamo torrera</option>
-            </select>
-          </td>
-        </tr>
+          <tr>
+            <td class="label">Sitio coubicado:</td>
+            <td>
+              <label class="option-label">
+                <input type="radio" name="sitioCoubicado" value="Sí" />
+                Sí
+              </label>
+            </td>
+            <td>
+              <label class="option-label">
+                <input type="radio" name="sitioCoubicado" value="No" />
+                No
+              </label>
+            </td>
+            <td></td>
+          </tr>
 
-        <tr>
-          <td class="label">Descripción de la incidencia:</td>
-          <td colspan="3">
-            <textarea
-              id="descripcionIncidencia"
-              name="descripcionIncidencia"
-              rows="6"
-              placeholder="Describa aquí la incidencia presentada..."
-            ></textarea>
-          </td>
-        </tr>
+          <tr>
+            <td class="label">Impedimiento de trabajos:</td>
+            <td>
+              <label class="option-label">
+                <input type="radio" name="impedimientoTrabajos" value="Sí" />
+                Sí
+              </label>
+            </td>
+            <td>
+              <label class="option-label">
+                <input type="radio" name="impedimientoTrabajos" value="No" />
+                No
+              </label>
+            </td>
+            <td></td>
+          </tr>
 
-        <tr>
-          <td class="label">Especificar sitio de la incidencia:</td>
-          <td>
-            <label class="option-label">
-              <input type="checkbox" name="sitioIncidencia" value="Sala de equipos" />
-              Sala de equipos
-            </label>
-          </td>
-          <td>
-            <label class="option-label">
-              <input type="checkbox" name="sitioIncidencia" value="Áreas libres" />
-              Áreas libres
-            </label>
-          </td>
-          <td></td>
-        </tr>
+          <tr>
+            <td class="label">Tipo de incidencia:</td>
+            <td colspan="3">
+              <select id="tipoIncidencia" name="tipoIncidencia">
+                <option value="">Seleccione una opción</option>
+                <option value="Acceso – chapa/candado">Acceso – chapa/candado</option>
+                <option value="Acceso – deuda">Acceso – deuda</option>
+                <option value="Acceso – contrato">Acceso – contrato</option>
+                <option value="Acceso – propietario no ubicable">Acceso – propietario no ubicable</option>
+                <option value="Acceso – reubicación de sitio">Acceso – reubicación de sitio</option>
+                <option value="Acceso (otros)">Acceso (otros)</option>
+                <option value="Infraestructura - insalubridad">Infraestructura - insalubridad</option>
+                <option value="Infraestructura - corrosión">Infraestructura - corrosión</option>
+                <option value="Infraestructura - spat">Infraestructura - spat</option>
+                <option value="Infraestructura - alta temperatura">Infraestructura - alta temperatura</option>
+                <option value="Robo/vandalismo">Robo/vandalismo</option>
+                <option value="Reclamo torrera">Reclamo torrera</option>
+              </select>
+            </td>
+          </tr>
 
-        <tr>
-          <td class="label">Tipo Mantenimiento:</td>
-          <td colspan="3">
-            <select id="tipoMantenimiento" name="tipoMantenimiento">
-              <option value="">Seleccione una opción</option>
-              <option value="Preventivo">Preventivo</option>
-              <option value="Correctivo">Correctivo</option>
-              <option value="Desmontaje de antenas">Desmontaje de antenas</option>
-              <option value="Proactivo">Proactivo</option>
-              <option value="SWAP">SWAP</option>
-            </select>
-          </td>
-        </tr>
+          <tr>
+            <td class="label">Descripción de la incidencia:</td>
+            <td colspan="3">
+              <textarea
+                id="descripcionIncidencia"
+                name="descripcionIncidencia"
+                rows="6"
+                placeholder="Describa aquí la incidencia presentada..."
+              ></textarea>
+            </td>
+          </tr>
 
-        <tr>
-          <td class="label">Tipo de afectación:</td>
-          <td colspan="3">
-            <select id="tipoAfectacion" name="tipoAfectacion">
-              <option value="">Seleccione una opción</option>
-              <option value="Afectación parcial">Afectación parcial</option>
-              <option value="Afectación total">Afectación total</option>
-              <option value="Sin afectación">Sin afectación</option>
-              <option value="N/A">N/A</option>
-              <option value="Interferencia">Interferencia</option>
-            </select>
-          </td>
-        </tr>
+          <tr>
+            <td class="label">Especificar sitio de la incidencia:</td>
+            <td>
+              <label class="option-label">
+                <input type="checkbox" name="sitioIncidencia" value="Sala de equipos" />
+                Sala de equipos
+              </label>
+            </td>
+            <td>
+              <label class="option-label">
+                <input type="checkbox" name="sitioIncidencia" value="Áreas libres" />
+                Áreas libres
+              </label>
+            </td>
+            <td></td>
+          </tr>
 
-        <tr>
-          <td class="label">Ticket de atención para torrera ATC:</td>
-          <td colspan="3">
-            <input type="text" id="ticketAtencion" name="ticketAtencion" placeholder="Ingrese el ticket de atención" />
-          </td>
-        </tr>
+          <tr>
+            <td class="label">Tipo Mantenimiento:</td>
+            <td colspan="3">
+              <select id="tipoMantenimiento" name="tipoMantenimiento">
+                <option value="">Seleccione una opción</option>
+                <option value="Preventivo">Preventivo</option>
+                <option value="Correctivo">Correctivo</option>
+                <option value="Desmontaje de antenas">Desmontaje de antenas</option>
+                <option value="Proactivo">Proactivo</option>
+                <option value="SWAP">SWAP</option>
+              </select>
+            </td>
+          </tr>
 
-        <tr>
-          <td class="label">Adjuntar evidencia:</td>
-          <td colspan="3">
-            <div class="attachments-box">
-              <div class="attachments-header">
-                <input type="file" id="evidencias" name="evidencias" accept="image/*" multiple />
-                <button type="button" id="btnLimpiarAdjuntos" class="btn-limpiar-adjuntos">
-                  Limpiar adjuntos
-                </button>
+          <tr>
+            <td class="label">Tipo de afectación:</td>
+            <td colspan="3">
+              <select id="tipoAfectacion" name="tipoAfectacion">
+                <option value="">Seleccione una opción</option>
+                <option value="Afectación parcial">Afectación parcial</option>
+                <option value="Afectación total">Afectación total</option>
+                <option value="Sin afectación">Sin afectación</option>
+                <option value="N/A">N/A</option>
+                <option value="Interferencia">Interferencia</option>
+              </select>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="label">Ticket de atención para torrera ATC:</td>
+            <td colspan="3">
+              <input type="text" id="ticketAtencion" name="ticketAtencion" placeholder="Ingrese el ticket de atención" />
+            </td>
+          </tr>
+
+          <tr>
+            <td class="label">Adjuntar evidencia:</td>
+            <td colspan="3">
+              <div class="attachments-box">
+                <div class="attachments-header">
+                  <input type="file" id="evidencias" name="evidencias" accept="image/*" multiple />
+                  <button type="button" id="btnLimpiarAdjuntos" class="btn-limpiar-adjuntos">
+                    Limpiar adjuntos
+                  </button>
+                </div>
+
+                <div id="listaAdjuntos" class="attachments-list">
+                  <div class="attachments-empty">Aún no hay imágenes seleccionadas.</div>
+                </div>
+
+                <small class="file-help">
+                  Puede agregar imágenes una o varias veces. Solo se permiten imágenes.
+                </small>
               </div>
+            </td>
+          </tr>
+        </table>
 
-              <div id="listaAdjuntos" class="attachments-list">
-                <div class="attachments-empty">Aún no hay imágenes seleccionadas.</div>
-              </div>
+        <div class="buttons">
+          <button type="submit" class="btn btn-enviar" id="btnEnviar">Enviar</button>
+          <button type="button" class="btn btn-limpiar" id="btnLimpiar">Limpiar</button>
+        </div>
 
-              <small class="file-help">
-                Puede agregar imágenes una o varias veces. Solo se permiten imágenes.
-              </small>
-            </div>
-          </td>
-        </tr>
-      </table>
+        <p id="mensaje"></p>
+      </form>
+    </section>
 
-      <div class="buttons">
-        <button type="submit" class="btn btn-enviar" id="btnEnviar">Enviar</button>
-        <button type="button" class="btn btn-limpiar" id="btnLimpiar">Limpiar</button>
+    <!-- VISTA SEGUIMIENTO -->
+    <section id="seguimientoView" class="seguimiento-view hidden">
+      <div class="seguimiento-header">
+        <div>
+          <h2>Seguimiento de casos</h2>
+        </div>
+
+        <div class="seguimiento-actions">
+          <input
+            type="text"
+            id="buscarSeguimiento"
+            class="seguimiento-search"
+            placeholder="Buscar por ID, CU, Site, Estado o Responsable..."
+          />
+          <button type="button" id="btnRefrescarSeguimiento" class="btn btn-enviar">
+            Refrescar
+          </button>
+          <button type="button" id="btnVolverFormulario" class="btn btn-limpiar">
+            Volver al formulario
+          </button>
+        </div>
       </div>
 
-      <p id="mensaje"></p>
-    </form>
+      <div class="seguimiento-summary" id="seguimientoResumen">
+        Tickets cargados: 0
+      </div>
+
+      <div class="seguimiento-table-wrapper">
+        <table class="seguimiento-table">
+          <thead>
+            <tr>
+              <th>FECHA_REGISTRO</th>
+              <th>ID</th>
+              <th>CU</th>
+              <th>Site</th>
+              <th>T. Incidencia</th>
+              <th>T. Afectación</th>
+              <th>Torre</th>
+              <th>Estado</th>
+              <th>Responsable</th>
+              <th>Días</th>
+            </tr>
+          </thead>
+          <tbody id="seguimientoTableBody">
+            <tr>
+              <td colspan="10" class="seguimiento-empty">Presiona Refrescar para cargar los tickets.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
   </div>
 
   <div id="popupExito" class="popup-overlay">
