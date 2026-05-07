@@ -12,13 +12,28 @@ const listaAdjuntos = document.getElementById("listaAdjuntos");
 const btnLimpiarAdjuntos = document.getElementById("btnLimpiarAdjuntos");
 const loaderEnvio = document.getElementById("loaderEnvio");
 
+const formView = document.getElementById("formView");
+const seguimientoView = document.getElementById("seguimientoView");
+const btnSeguimientoCaso = document.getElementById("btnSeguimientoCaso");
+const btnVolverFormulario = document.getElementById("btnVolverFormulario");
+const btnRefrescarSeguimiento = document.getElementById("btnRefrescarSeguimiento");
+const buscarSeguimiento = document.getElementById("buscarSeguimiento");
+const seguimientoTableBody = document.getElementById("seguimientoTableBody");
+const seguimientoResumen = document.getElementById("seguimientoResumen");
+
 const API_URL = "https://script.google.com/macros/s/AKfycbzjRlVJhY28EsIzi1r1i9npHwRWitY8vlNLSXadr6QzqA2EgbKpZY1VZSIPPLkqmBntPA/exec";
 
+/*
+  Esta es la API del dashboard/seguimiento.
+  Debe ser el despliegue donde existe accion=obtenerTickets.
+*/
+const API_SEGUIMIENTO_URL = "https://script.google.com/macros/s/AKfycbyH61t1jGJTog6IKxBu5NjmwGP09XXKFKV8G7nNifzu8eRhAEv3P5x8aDIlS3-iilxe/exec";
+
 let archivosAdjuntos = [];
+let ticketsSeguimiento = [];
 
 /* =========================
    BLOQUEAR ENTER EN EL FORM
-   El registro solo se envía con el botón Enviar.
 ========================= */
 if (form) {
   form.addEventListener("keydown", function (e) {
@@ -43,6 +58,43 @@ function ocultarLoaderEnvio() {
   if (loaderEnvio) {
     loaderEnvio.classList.remove("active");
   }
+}
+
+/* =========================
+   VISTAS
+========================= */
+if (btnSeguimientoCaso) {
+  btnSeguimientoCaso.addEventListener("click", async function () {
+    mostrarVistaSeguimiento();
+
+    if (!ticketsSeguimiento.length) {
+      await cargarTicketsSeguimiento();
+    }
+  });
+}
+
+if (btnVolverFormulario) {
+  btnVolverFormulario.addEventListener("click", function () {
+    mostrarVistaFormulario();
+  });
+}
+
+if (btnRefrescarSeguimiento) {
+  btnRefrescarSeguimiento.addEventListener("click", cargarTicketsSeguimiento);
+}
+
+if (buscarSeguimiento) {
+  buscarSeguimiento.addEventListener("input", renderizarTablaSeguimiento);
+}
+
+function mostrarVistaSeguimiento() {
+  if (formView) formView.classList.add("hidden");
+  if (seguimientoView) seguimientoView.classList.remove("hidden");
+}
+
+function mostrarVistaFormulario() {
+  if (seguimientoView) seguimientoView.classList.add("hidden");
+  if (formView) formView.classList.remove("hidden");
 }
 
 /* =========================
@@ -407,6 +459,199 @@ function leerArchivoComoBase64(file) {
   });
 }
 
+/* =========================
+   SEGUIMIENTO DE CASOS
+========================= */
+async function cargarTicketsSeguimiento() {
+  if (!seguimientoTableBody) return;
+
+  seguimientoTableBody.innerHTML = `
+    <tr>
+      <td colspan="10" class="seguimiento-empty">Cargando tickets...</td>
+    </tr>
+  `;
+
+  if (seguimientoResumen) {
+    seguimientoResumen.textContent = "Cargando tickets...";
+  }
+
+  try {
+    const response = await fetch(`${API_SEGUIMIENTO_URL}?accion=obtenerTickets`, {
+      method: "GET",
+      cache: "no-store"
+    });
+
+    const data = await response.json();
+
+    if (!Array.isArray(data)) {
+      throw new Error("La API de seguimiento no devolvió una lista válida.");
+    }
+
+    ticketsSeguimiento = data.map(ticket => ({
+      ...ticket,
+      DIAS_CALCULADOS: calcularDiasTicketSeguimiento(ticket.FECHA_REGISTRO, ticket.FECHA_CIERRE)
+    }));
+
+    renderizarTablaSeguimiento();
+  } catch (error) {
+    console.error(error);
+
+    seguimientoTableBody.innerHTML = `
+      <tr>
+        <td colspan="10" class="seguimiento-empty">
+          No se pudo cargar la información de seguimiento.
+        </td>
+      </tr>
+    `;
+
+    if (seguimientoResumen) {
+      seguimientoResumen.textContent = "Error al cargar tickets.";
+    }
+  }
+}
+
+function renderizarTablaSeguimiento() {
+  if (!seguimientoTableBody) return;
+
+  const texto = normalizarBusqueda(buscarSeguimiento?.value || "");
+
+  const filtrados = ticketsSeguimiento.filter(ticket => {
+    const campos = [
+      ticket.FECHA_REGISTRO,
+      ticket.ID,
+      ticket.CU,
+      ticket.SITE,
+      ticket.INCIDENCIA,
+      ticket.AFECTACION,
+      ticket.TORRERO,
+      ticket.ESTADO,
+      ticket.RESPONSABLE,
+      ticket.DIAS_CALCULADOS
+    ].map(valor => normalizarBusqueda(valor));
+
+    return texto === "" || campos.some(valor => valor.includes(texto));
+  });
+
+  if (seguimientoResumen) {
+    seguimientoResumen.textContent = `Tickets cargados: ${filtrados.length}`;
+  }
+
+  if (!filtrados.length) {
+    seguimientoTableBody.innerHTML = `
+      <tr>
+        <td colspan="10" class="seguimiento-empty">No se encontraron tickets.</td>
+      </tr>
+    `;
+    return;
+  }
+
+  seguimientoTableBody.innerHTML = "";
+
+  filtrados.forEach(ticket => {
+    const tr = document.createElement("tr");
+
+    const responsable = String(ticket.RESPONSABLE || "Sin asignar").trim() || "Sin asignar";
+
+    tr.innerHTML = `
+      <td title="${escapeAttribute(formatearFechaSeguimiento(ticket.FECHA_REGISTRO))}">
+        ${escapeHtml(formatearFechaSeguimiento(ticket.FECHA_REGISTRO))}
+      </td>
+      <td title="${escapeAttribute(ticket.ID || "")}">
+        ${escapeHtml(ticket.ID || "")}
+      </td>
+      <td title="${escapeAttribute(ticket.CU || "")}">
+        ${escapeHtml(ticket.CU || "")}
+      </td>
+      <td title="${escapeAttribute(ticket.SITE || "")}">
+        ${escapeHtml(ticket.SITE || "")}
+      </td>
+      <td title="${escapeAttribute(ticket.INCIDENCIA || "")}">
+        ${escapeHtml(ticket.INCIDENCIA || "")}
+      </td>
+      <td title="${escapeAttribute(ticket.AFECTACION || "")}">
+        ${escapeHtml(ticket.AFECTACION || "")}
+      </td>
+      <td title="${escapeAttribute(ticket.TORRERO || "")}">
+        ${escapeHtml(ticket.TORRERO || "")}
+      </td>
+      <td>
+        <span class="badge-status ${obtenerClaseEstadoSeguimiento(ticket.ESTADO)}">
+          ${escapeHtml(ticket.ESTADO || "")}
+        </span>
+      </td>
+      <td title="${escapeAttribute(responsable)}">
+        ${escapeHtml(responsable)}
+      </td>
+      <td>
+        ${ticket.DIAS_CALCULADOS ?? 0}
+      </td>
+    `;
+
+    seguimientoTableBody.appendChild(tr);
+  });
+}
+
+function obtenerClaseEstadoSeguimiento(estado) {
+  const texto = normalizarBusqueda(estado);
+
+  if (texto.includes("cerrado")) return "badge-cerrado";
+  if (texto.includes("abierto")) return "badge-abierto";
+  if (texto.includes("proceso")) return "badge-proceso";
+
+  return "badge-otro";
+}
+
+function calcularDiasTicketSeguimiento(fechaRegistro, fechaCierre) {
+  const fechaInicio = convertirAFechaLocalSeguimiento(fechaRegistro);
+  if (!fechaInicio) return 0;
+
+  const fechaFin = convertirAFechaLocalSeguimiento(fechaCierre) || obtenerHoyPeruSoloFechaSeguimiento();
+
+  const diferenciaMs = fechaFin - fechaInicio;
+  const dias = Math.floor(diferenciaMs / (1000 * 60 * 60 * 24));
+
+  return dias >= 0 ? dias : 0;
+}
+
+function convertirAFechaLocalSeguimiento(fechaValor) {
+  if (!fechaValor) return null;
+
+  const fecha = new Date(fechaValor);
+  if (isNaN(fecha.getTime())) return null;
+
+  return new Date(fecha.getFullYear(), fecha.getMonth(), fecha.getDate());
+}
+
+function obtenerHoyPeruSoloFechaSeguimiento() {
+  const hoyPeruTexto = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/Lima",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  }).format(new Date());
+
+  return new Date(`${hoyPeruTexto}T00:00:00`);
+}
+
+function formatearFechaSeguimiento(fecha) {
+  if (!fecha) return "-";
+
+  const d = new Date(fecha);
+  if (isNaN(d.getTime())) return String(fecha);
+
+  return d.toLocaleString("es-PE", {
+    timeZone: "America/Lima",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+}
+
+/* =========================
+   UTILIDADES
+========================= */
 function validarCorreo(correo) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(correo || "").trim());
 }
@@ -423,4 +668,12 @@ function escapeHtml(texto) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#39;");
+}
+
+function escapeAttribute(texto) {
+  return String(texto ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
 }
